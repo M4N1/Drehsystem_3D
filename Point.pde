@@ -228,21 +228,29 @@ public class Point { //<>//
   void update() {
     println("\n" + this.name);
     //this.time += (millis()-this.lastTime)*this.drawSpeed;
+    
+    // time ellapsed since the last update
     float dTime = (millis()-this.lastTime)*(float)this.drawSpeed;
+    
     if (this.setup || this.reset)
       dTime = 0;
     if (dTime != 0 || this.setup || this.reset) {
+      // calc the new position of the point
       this.lastPos = getVector(this.pos);
       this.lastV = getVector(this.v);
+      // update angular speed
       this.w.x += this.alpha*this.drawSpeed*dTime/1000;
       this.w.y += this.alpha*this.drawSpeed*dTime/1000;
       this.w.z += this.alpha*this.drawSpeed*dTime/1000;
       println("abs pos:" + this.pos);
       PVector position = getVector(this.pos);
       if (this.parent != null) {
+        // update absolute value of angualar speed and add parent position
         this.wAbs = new PVector(this.parent.wAbs.x+this.w.x, this.parent.wAbs.y+this.w.y, this.parent.wAbs.z+this.w.z);
         position = position.sub(this.parent.pos);
       } else {
+        // if there isn't a parent point the total angular speed consists
+        // only of the speed of the point itself
         this.wAbs = getVector(this.w);
       }
       
@@ -318,6 +326,7 @@ public class Point { //<>//
     return false;
   }
 
+  // get path status
   ArrayList<PVector> getPath() {
     return this.path;
   }
@@ -356,8 +365,8 @@ public class Point { //<>//
       PVector start = getVector(this.parent.pos);
       //stroke(255,255,0);
       //line(start.x*scaleD, start.y*scaleD, start.z*scaleD, (this.lastPos.x), (this.lastPos.y), (this.lastPos.z));
-      stroke(255, 0, 0);
-      line(start.x*scaleD, start.y*scaleD, start.z*scaleD, start.x*scaleD+this.w.x, start.y*scaleD+this.w.y, start.z*scaleD+this.w.z);
+      //stroke(255, 0, 0);
+      //line(start.x*scaleD, start.y*scaleD, start.z*scaleD, start.x*scaleD+this.w.x, start.y*scaleD+this.w.y, start.z*scaleD+this.w.z);
     }
     pushMatrix();
     translate(scaledPos.x, scaledPos.y, scaledPos.z);
@@ -402,10 +411,10 @@ public class Point { //<>//
     PVector position = getVector(vector);
     PVector axis = getVector(a).normalize();
     PVector pn = axis.cross(position);
-    if (this.parent != null) {
-      stroke(51);
-      line(this.parent.pos.x*scaleD, this.parent.pos.y*scaleD, this.parent.pos.z*scaleD, (pn.x+this.parent.pos.x)*scaleD, (pn.y+this.parent.pos.y)*scaleD, (pn.z+this.parent.pos.z)*scaleD);
-    }
+    //if (this.parent != null) {
+    //  stroke(51);
+    //  line(this.parent.pos.x*scaleD, this.parent.pos.y*scaleD, this.parent.pos.z*scaleD, (pn.x+this.parent.pos.x)*scaleD, (pn.y+this.parent.pos.y)*scaleD, (pn.z+this.parent.pos.z)*scaleD);
+    //}
     //for (int t=0; t<dTime; t++) {
       axis = getVector(a).normalize();
       pn = axis.cross(pn).mult(-1);
@@ -461,8 +470,8 @@ public class Point { //<>//
       if (this.parent != null) {
         strokeWeight(4);
         PVector start = getVector(this.parent.pos);
-        stroke(255,0,255);
-        line(start.x*scaleD, start.y*scaleD, start.z*scaleD, start.x*scaleD+axis.x, start.y*scaleD+axis.y, start.z*scaleD+axis.z);
+        //stroke(255,0,255);
+        //line(start.x*scaleD, start.y*scaleD, start.z*scaleD, start.x*scaleD+axis.x, start.y*scaleD+axis.y, start.z*scaleD+axis.z);
         //stroke(51);
         //line(start.x*scaleD, start.y*scaleD, start.z*scaleD, (start.x+offset.x)*scaleD, (start.y+offset.y)*scaleD, (start.z+offset.z)*scaleD);
         //line((start.x+offset.x)*scaleD, (start.y+offset.y)*scaleD, (start.z+offset.z)*scaleD, (start.x+pn.x)*scaleD, (start.y+pn.y)*scaleD, (start.z+pn.z)*scaleD);
@@ -508,9 +517,9 @@ public class Point { //<>//
       if (this.parent != null) {
         strokeWeight(4);
         PVector start = getVector(this.parent.pos);
-        stroke(51);
-        line(start.x*scaleD, start.y*scaleD, start.z*scaleD, (start.x+offset.x)*scaleD, (start.y+offset.y)*scaleD, (start.z+offset.z)*scaleD);
-        line((start.x+offset.x)*scaleD, (start.y+offset.y)*scaleD, (start.z+offset.z)*scaleD, (start.x+pn.x)*scaleD, (start.y+pn.y)*scaleD, (start.z+pn.z)*scaleD);
+        //stroke(51);
+        //line(start.x*scaleD, start.y*scaleD, start.z*scaleD, (start.x+offset.x)*scaleD, (start.y+offset.y)*scaleD, (start.z+offset.z)*scaleD);
+        //line((start.x+offset.x)*scaleD, (start.y+offset.y)*scaleD, (start.z+offset.z)*scaleD, (start.x+pn.x)*scaleD, (start.y+pn.y)*scaleD, (start.z+pn.z)*scaleD);
       }
       println("offset:" + offset);
       println("result:" + result);
@@ -557,6 +566,7 @@ public class Point { //<>//
       p.z = z * cos(alpha) - x * sin(alpha);
       return getVector(p);
   }
+  
   PVector rotateVZ(PVector p, float alpha) {
     println("rotating around z");
     float x = p.x;
