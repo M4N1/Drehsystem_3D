@@ -16,9 +16,17 @@ class TextBox extends TextView { //<>// //<>// //<>//
   PVector pos;
   //int setWidth = 0, setHeight = 0;
   //int viewWidth = 0, viewHeight = 0;
+  
+  // hint displayed, when there's no standard value an the textbox is empty
   String hint = "";
+  
+  // standard value to fill in the textbox if it's empty
   String standardText = "";
+  
+  // at any point the actual text displayed on the screen
   String outputText = "";
+  
+  // text buffer, while in editing mode
   String input = "";
   String text = "";
   int textSize = 20;
@@ -160,6 +168,7 @@ class TextBox extends TextView { //<>// //<>// //<>//
         deleteMarkedInputChars();
       }
       switch (pressedKeyCode) {
+      // return
       case 8:
         if (this.markedAreaLength > 0)
           deleteMarkedInputChars();
@@ -167,16 +176,19 @@ class TextBox extends TextView { //<>// //<>// //<>//
           deleteInputChar(this.cursorPos, -1);
         break;
 
+      // new line
       case 10:
         textEdited();
         break;
 
+      // space
       case 32:
         if (this.inputType == InputTypes.ALL || this.inputType == InputTypes.STRING) {
           addInputChar(this.cursorPos, pressedKey);
         }
         break;
 
+      // left arrow
       case 37:
         if (keyIsPressed(16)) {
           if (this.markedAreaLength == 0) {
@@ -198,12 +210,14 @@ class TextBox extends TextView { //<>// //<>// //<>//
         updateCursor(-1);
         break;
 
+      // up arrow
       case 38:
         textEdited();
         if (this.mListener != null)
           this.mListener.previousTextBox(this.id, calcCharPos(this.cursorPos));
         break;
-
+      
+      // right arrow
       case 39:
         if (keyIsPressed(16)) {
           if (this.markedAreaLength == 0) {
@@ -223,12 +237,14 @@ class TextBox extends TextView { //<>// //<>// //<>//
         updateCursor(1);
         break;
 
+      // down arrow
       case 40:
         textEdited();
         if (this.mListener != null)
           this.mListener.nextTextBox(this.id, calcCharPos(this.cursorPos));
         break;
 
+      // delete
       case 127:
         if (this.markedAreaLength > 0)
           deleteMarkedInputChars();
@@ -392,11 +408,12 @@ class TextBox extends TextView { //<>// //<>// //<>//
       }
       this.input = this.text;
     }
+    println("Texbox: changed input value to '" + this.input + "'");
     updateText();
     this.markedAreaStart = 0;
     this.markedAreaLength = 0;
     if (this.mListener != null) {
-      this.mListener.textEdited(this.id, this.text);
+      this.mListener.textEdited(this.id, this.outputText);
     }
   }
 
@@ -407,6 +424,7 @@ class TextBox extends TextView { //<>// //<>// //<>//
         //println("std text");
         this.outputText = this.standardText;
         this.input = this.outputText;
+        println("Texbox: changed value to standard value (" + this.input + ")");
       } else if (!this.hint.equals("")) {
         this.outputText = this.hint;
       }

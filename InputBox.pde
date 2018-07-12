@@ -43,8 +43,14 @@ public class InputBox extends PApplet implements TextBoxListener, OnClickListene
     this.values = values;
     if (descValues != null) {
       if (descValues.length == values.length) {
-        if (stdValue)
+        if (stdValue) {
           this.standardValues = descValues;
+          println("standard values of input box: ");
+          for (int i=0; i<this.standardValues.length; i++) {
+             println(this.standardValues[i]);
+          }
+          println("");
+        }
         else
           this.hintValues = descValues;
       }
@@ -138,6 +144,7 @@ public class InputBox extends PApplet implements TextBoxListener, OnClickListene
     tb.setId(this.counter);
     if (this.standardValues != null) {
       tb.setStandardText(this.standardValues[this.counter-1]);
+      println("Set standard value of textbox " + this.counter + ": " + this.standardValues[this.counter-1]);
     } else if (this.hintValues != null) {
       tb.setHint(this.hintValues[this.counter-1]);
     }
@@ -161,12 +168,14 @@ public class InputBox extends PApplet implements TextBoxListener, OnClickListene
               //println("maxValue:"+maxValue);
               if (value > maxValue) {
                 tb.setText(Float.toString(maxValue));
+                println("Textbox " + tb.id + ": set value to max value");
                 return;
               }
               float minValue = limitsMin[id-1];
               //println("minValue:"+minValue);
               if (value < minValue) {
                 tb.setText(Float.toString(minValue));
+                println("Textbox " + tb.id + ": set value to min value");
                 return;
               }
             }
