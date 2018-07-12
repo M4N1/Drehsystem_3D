@@ -88,7 +88,7 @@ public class Toast extends View {
       if (!this.clicked)
         update();
       this.context.fill(255);
-      this.context.stroke(100);
+      this.context.stroke(1);
       this.context.textSize(20);
       float x = this.pos.x;
       float y = this.pos.y;
