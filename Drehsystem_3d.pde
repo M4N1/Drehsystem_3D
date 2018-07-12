@@ -1,5 +1,9 @@
+//---------------------------------------------------------------------
+// imports
+//---------------------------------------------------------------------
 import java.util.Iterator;
 import java.util.Map;
+//---------------------------------------------------------------------
 
 final static boolean output = true;
 long startTime;
@@ -27,6 +31,10 @@ ArrayList<Integer> mouseButtons;
 ArrayList<Point> points = new ArrayList<Point>();
 Point pointToAdd;
 int nameCounter = 65;
+
+//---------------------------------------------------------------------
+// Graphics components
+//---------------------------------------------------------------------
 PGraphics xySurface, yzSurface, xzSurface;
 ArrayList<Checkbox> checkboxes;
 TextBox tbW;
@@ -38,6 +46,11 @@ Checkbox cVelocity;
 Checkbox cAcceleration;
 Checkbox cOutput;
 Checkbox cPath;
+//---------------------------------------------------------------------
+
+//---------------------------------------------------------------------
+// Graphics/Output variables
+//---------------------------------------------------------------------
 PVector[] lastPos;
 PVector[] v;
 float size = 20;
@@ -52,6 +65,9 @@ float[] A = {0, 2, 5};
 float[] a = {0, 0, 0};
 long lastTime = 0;
 float startPhi = 0;
+//---------------------------------------------------------------------
+
+
 float speed = 1.0;
 boolean setup = true;
 boolean inputWindowOpened = false;
@@ -82,6 +98,7 @@ boolean clearPath = false;
 Toast toast;
 
 void settings() {
+  // set up screen size
   size(1500, 800, P3D);
 }
 
@@ -299,8 +316,6 @@ void draw()
     else if (angle[1] > PI) angle[1] -= TWO_PI;
     println("rotation y:" + angle[0]);
     println("rotation x:" + angle[1]);
-    //if (angle[0] < -PI || angle[0] > PI) angle[0] *= -1;
-    //if (angle[1] < -PI || angle[1] > PI) angle[1] *= -1;
     //println("angle x:" + angle[1]);
     //println("angle y:" + angle[0]);
     //println("last angle x:" + lastSetAngle[1]);
@@ -359,36 +374,18 @@ void draw()
   translate(pos.x, pos.y, 0);
   
   pushMatrix();
-  //rotateY(angle[0]*angle[1]/HALF_PI+angle[0]);
-  //rotateZ(-angle[1]*(PI-angle[0])/HALF_PI+angle[1]);
-  //rotateX(-angle[1]*angle[0]/HALF_PI+angle[1]);
-  //PVector v1 = new PVector(0, cos(currentAngle[0])+1, 0);
-  //PVector v2 = new PVector(cos(currentAngle[1])+1, 0, 0);
-  //PVector v3 = new PVector(0, 0, cos(currentAngle[2])+1);
-  //detectionCanvas.beginDraw();
-  //detectionCanvas.background(0);
-  //detectionCanvas.translate(width/2, height/2);
-  //detectionCanvas.rotate(angle[0], 0, cos(currentAngle[0])+1, 0);
-  //detectionCanvas.rotate((currentAngle[0] > HALF_PI || currentAngle[0] < -HALF_PI ? -1 : 1) * angle[1], cos(currentAngle[1])+1, 0, 0);
-  //detectionCanvas.rotate(angle[2], 0, 0, cos(currentAngle[2])+1);
-  //detectionCanvas.endDraw();
-    //zoom = setZoom - (mouseY - mouseReference.y) / 50;
   zoom = zooming ? setZoom - (mouseY - mouseReference.y) / 50 : setZoom;
   scale(zoom);
-  //rotate(angle[0], 0, cos(currentAngle[0]), 0);
   rotateY(angle[0]);
   currentAngle[0] = angle[0];
   
-  //rotate((currentAngle[0] > HALF_PI || currentAngle[0] < -HALF_PI ? -1 : 1) * angle[1], cos(currentAngle[1]), 0, 0);
   rotateX(angle[1]);
   currentAngle[1] = angle[1];
   
-  //rotate(angle[2], 0, 0, cos(currentAngle[2]));
   currentAngle[2] = angle[2];
   
   if (!this.stopped) {
     update();
-    //this.stopped = true;
   }
   
   //println("x:" + v1.x);
@@ -651,7 +648,6 @@ void mousePressed() {
                 );
                 inputWindowOpened = true;
               }
-                //break;
   
               //case 2:
               else if (item.equals(possibleValues[1])) {
@@ -692,13 +688,13 @@ void mousePressed() {
                       public void finishedEditing(String... data) {
                         inputWindowOpened = false;
                         if (data.length == 7) {
-                          float x = data[0] == "" ? 0.0 : Float.parseFloat(data[0]);
-                          float y = data[1] == "" ? 0.0 : Float.parseFloat(data[1]);
-                          float z = data[2] == "" ? 0.0 : Float.parseFloat(data[2]);
-                          float wx = data[3] == "" ? 0.0 : Float.parseFloat(data[3]);
-                          float wy = data[4] == "" ? 0.0 : Float.parseFloat(data[4]);
-                          float wz = data[5] == "" ? 0.0 : Float.parseFloat(data[5]);
-                          float alpha = data[6] == "" ? 0.0 : Float.parseFloat(data[6]);
+                          float x = getNonNullFloat(data[0]);//data[0] == "" ? 0.0 : Float.parseFloat(data[0]);
+                          float y = getNonNullFloat(data[1]);//data[1] == "" ? 0.0 : Float.parseFloat(data[1]);
+                          float z = getNonNullFloat(data[2]);//data[2] == "" ? 0.0 : Float.parseFloat(data[2]);
+                          float wx = getNonNullFloat(data[3]);//data[3] == "" ? 0.0 : Float.parseFloat(data[3]);
+                          float wy = getNonNullFloat(data[4]);//data[4] == "" ? 0.0 : Float.parseFloat(data[4]);
+                          float wz = getNonNullFloat(data[5]);//data[5] == "" ? 0.0 : Float.parseFloat(data[5]);
+                          float alpha = getNonNullFloat(data[6]);//data[6] == "" ? 0.0 : Float.parseFloat(data[6]);
                           println("x:"+x);
                           println("y:"+y);
                           println("z:"+z);
@@ -725,7 +721,6 @@ void mousePressed() {
                   );
                   inputWindowOpened = true;
                 }
-                //break;
               }
   
               //case 3:
@@ -735,7 +730,6 @@ void mousePressed() {
                 for (GraphApplet a : applets) {
                   if (a.getName().equals(name)) {
                     exists = true;
-                    break;
                   }
                 }
                 if (!exists) {
@@ -746,7 +740,6 @@ void mousePressed() {
                   cOutput.setChecked(true);
                   applets.add(sa);
                 }
-                //break;
               }
   
               //case 4:
@@ -754,7 +747,6 @@ void mousePressed() {
                 boolean newVisiblityPath = !point.visibilityPath;
                 point.drawPath(newVisiblityPath);
                 if (!newVisiblityPath) erasePath();
-                //break;
               }
                 
               //case 5:
@@ -808,7 +800,6 @@ void mousePressed() {
                   inputWindowOpened = true;
                 }
               }
-              //}
             }
           }
           );
@@ -1178,3 +1169,5 @@ Checkbox addCheckBox(String title, boolean checked, ArrayList<Checkbox> group) {
   this.checkBoxY += this.checkBoxOffset;
   return c;
 }
+
+float getNonNullFloat(String s) {return s == "" ? 0.0 : Float.parseFloat(s);}
