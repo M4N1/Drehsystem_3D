@@ -754,6 +754,7 @@ void mousePressed() {
                 points.remove(point);
               }
               
+              // case 6:
               else if (item.equals(possibleValues[6])) {
                 if (!inputWindowOpened) {
                   String[] values = new String[]{"r", "g", "b"};

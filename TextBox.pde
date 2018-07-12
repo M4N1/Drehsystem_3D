@@ -380,7 +380,6 @@ class TextBox extends TextView { //<>// //<>// //<>//
   void textEdited() {
     this.text = this.input;
     this.clicked = false;
-    //updateText();
     if (this.inputType == InputTypes.FLOAT) {
       if (this.input.length() > 0) {
         if (this.input.equals("."))
