@@ -289,7 +289,6 @@ void draw()
     handleKeyPressedEvent(lastPressedKeyCode, lastPressedKey);
   }
   if (this.pointToAdd != null) {
-      //Point addNewPoint(Point parent, PVector pos, PVector w, float alpha) 
       addNewPoint(this.pointToAdd.parent, this.pointToAdd.setPos, this.pointToAdd.setW, this.pointToAdd.setAlpha); 
       this.pointToAdd = null;
     }

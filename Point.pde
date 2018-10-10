@@ -45,9 +45,6 @@ public class Point { //<>//
 
   PVector getPosFromAngle(float amp, float[] angle) {
     if (angle.length != 2) return null;
-    //float x = amp * cos(angle[0]) * cos(angle[1]);
-    //float y = amp * sin(angle[1]);
-    //float z = amp * sin(angle[0]) * cos(angle[1]);
     float x = amp * cos(angle[0]) * cos(angle[1]);
     float y = amp * sin(angle[1]);
     float z = amp * sin(angle[0]) * cos(angle[1]);
@@ -129,29 +126,17 @@ public class Point { //<>//
       this.absSetPos = new PVector(pos.x, pos.y, pos.z);
     this.lastPos = new PVector (pos.x, pos.y, pos.z);
     this.pos = new PVector (pos.x, pos.y, pos.z);
-    //this.amp = sqrt(pos.x*pos.x+pos.y*pos.y);
-    //this.amp = this.pos.mag();
     this.phi[0] = 0;
     this.phi[1] = 0;
     if (!(this.pos.x == 0 && this.pos.z == 0)) {
-      //if (this.pos.x != 0) {
         println("phiXY atan:" + atan(this.pos.z / this.pos.x));
         this.phi[0] = map(atan(this.pos.z / this.pos.x), -PI, PI, -180, 180);
         println("phiXY mapped:" + this.phi[0]);
-        //if (this.pos.x < 0 || this.pos.z < 0) {
-        //  this.phi[0] += 180;
-        //}
-      //}
     }
     if (!(this.pos.z == 0 && this.pos.y == 0)) {
-      //if (this.pos.z != 0) {
         println("phiYZ atan:" + atan(this.pos.y / this.pos.z));
         this.phi[1] = map(atan(this.pos.y / this.pos.z), -PI, PI, -180, 180);
         println("phiYZ mapped:" + this.phi[1]);
-        //if (this.pos.z < 0 || this.pos.y < 0) {
-        //  this.phi[1] += 180;
-        //}
-      //}
     }
     println("Initialised position:" + this.pos);
     println("Initialised angle:[ " + this.phi[0] + ", " + this.phi[1] + " ]");
@@ -160,6 +145,7 @@ public class Point { //<>//
 
   void calcPos() {
     println("\n\n");
+    
     this.w = new PVector(this.setW.x, this.setW.y, this.setW.z);
     this.alpha = this.setAlpha;
     //println(this.name);
